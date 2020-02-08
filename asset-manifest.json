@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/lightning-dep/static/css/main.90d8c0d3.chunk.css",
+    "main.js": "/lightning-dep/static/js/main.07af11bf.chunk.js",
+    "main.js.map": "/lightning-dep/static/js/main.07af11bf.chunk.js.map",
+    "runtime-main.js": "/lightning-dep/static/js/runtime-main.b67146e8.js",
+    "runtime-main.js.map": "/lightning-dep/static/js/runtime-main.b67146e8.js.map",
+    "static/js/2.96df97d1.chunk.js": "/lightning-dep/static/js/2.96df97d1.chunk.js",
+    "static/js/2.96df97d1.chunk.js.map": "/lightning-dep/static/js/2.96df97d1.chunk.js.map",
+    "index.html": "/lightning-dep/index.html",
+    "precache-manifest.39291001eaf92194da3ef96865fdf940.js": "/lightning-dep/precache-manifest.39291001eaf92194da3ef96865fdf940.js",
+    "service-worker.js": "/lightning-dep/service-worker.js",
+    "static/css/main.90d8c0d3.chunk.css.map": "/lightning-dep/static/css/main.90d8c0d3.chunk.css.map",
+    "static/js/2.96df97d1.chunk.js.LICENSE": "/lightning-dep/static/js/2.96df97d1.chunk.js.LICENSE"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.b67146e8.js",
+    "static/js/2.96df97d1.chunk.js",
+    "static/css/main.90d8c0d3.chunk.css",
+    "static/js/main.07af11bf.chunk.js"
+  ]
+}
