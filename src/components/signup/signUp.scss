@@ -1,0 +1,114 @@
+#container{
+  display: flex;  
+  justify-content: space-evenly;
+  align-items: baseline;
+
+  #create-an-account{
+    width: 30%;
+  }
+}
+
+#container-sign-up{
+  h2{
+    border: 1px solid black;
+    display: inline-block;
+    margin: 0;
+    padding: .5em 1em;
+    font-size: .9em;
+  }
+
+  h2{
+    background-color: lightgray;
+  }
+
+  h2:hover{
+    background-color: white;
+  } 
+
+  #lawyer-signup{
+    border: 1px solid black;
+    padding: 1em;
+    text-align: center;
+    margin-bottom: 1em;
+  
+    input{
+      display: block;
+      margin: 1em auto;
+      width: 80%;
+      padding: 1em;
+      background-color: lightgray;
+    }
+  
+    select{
+      padding: 1em;
+      background-color: lightgray;
+    }
+  
+    button{
+      display: block;
+      width: 80%;
+      padding: 1em;
+      margin: 0 auto;
+    }
+  
+    #state, #bar{
+      display: inline-block;
+    }
+  
+    #bar, #accreditation {
+      width: 40%;
+      margin-left: 5px; 
+    }
+  
+    #state {
+      width: 39%;
+      font-size: 1.2em;
+      margin-left: -2.5em;
+    }
+  
+    #term-and-conditions{
+      display: inline-block;
+      width: 10%;
+    }
+  }
+
+  .underline{
+    text-decoration: underline;
+  }
+
+  
+}
+
+#sign-in-form{
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  border: 2px solid;
+  padding: 1em;
+  background: white;
+  height: 50%;
+  width: 50%;
+
+  #close{
+    text-align: left;
+  }
+
+  input, button{
+    display: block;
+    margin: 1em auto;
+    width: 80%;
+    padding: 1em;
+    background-color: lightgray;
+  }
+
+  button{
+    background-color: white;
+  }
+}
+
+.lawyer{
+  h2{
+    background-color: white;
+    font-size: 1.1em;
+  }
+}

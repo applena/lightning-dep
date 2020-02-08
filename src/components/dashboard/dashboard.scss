@@ -1,0 +1,31 @@
+#dashboard{
+  display: flex;
+
+  #top-dash{
+    display: flex;
+  }
+
+  #dashboard-main{
+    padding-left: 1em;
+    border-left: 2px solid black;
+    width: 100%;
+
+    .flex-container{
+      display: flex;
+      justify-content: space-between;
+
+      span{
+        font-size: .8em;
+      }
+    }
+  }
+
+  ul{
+
+    li{
+      list-style-type: none;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}
