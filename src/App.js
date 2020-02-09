@@ -65,13 +65,13 @@ class App extends React.Component{
     })
   }
 
-  componentWillMount = () => {
-    if(!Cookie.get('JWT')){
-      this.setState({loggedIn: false})
-    } else { 
-      this.setState ({ loggedIn: true })
-    }
-  }
+  // componentWillMount = () => {
+  //   if(!Cookie.get('JWT')){
+  //     this.setState({loggedIn: false})
+  //   } else { 
+  //     this.setState ({ loggedIn: true })
+  //   }
+  // }
 
   render(){
 
