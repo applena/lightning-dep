@@ -6,7 +6,7 @@ import Cookie from 'js-cookie';
 import If from './components/library/If';
 import SideNav from './components/sideNav/sideNav';
 import Dashboard from './components/dashboard/dashboard';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 import Cases from './components/cases/cases';
 import Depositions from './components/depositions/depositions';
 import cases from './components/functional/caseObj';
@@ -81,7 +81,7 @@ class App extends React.Component{
   let alerts = [{title: 'New Document Available', description: '3;17-cv-0019087'}, {title: 'Deposition Transcript Available', description: 'Jane Doe'}, {title: 'Deposition Transcript Available', description: 'John Doe'}]
  console.log('app render')
     return (
-      <BrowserRouter>
+      <HashRouter basename='/'>
         <div className="App">
           <Layout>
             <If condition={!this.state.loggedIn}>
@@ -123,7 +123,7 @@ class App extends React.Component{
             </If>
           </Layout>
         </div>
-      </BrowserRouter>
+      </HashRouter>
     );
   }
 }
