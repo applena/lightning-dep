@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/lightning-dep/precache-manifest.39291001eaf92194da3ef96865fdf940.js"
+  "/lightning-dep/precache-manifest.a7580b54ef3c632a1d71e74b266fc7f7.js"
 );
 
 self.addEventListener('message', (event) => {
