@@ -4,6 +4,7 @@ import '../cases.scss';
 import If from '../../library/If';
 import sortBy from '../../functional/sortBy';
 import CreateDeposition from './createDeposition';
+import { Link } from 'react-router-dom';
 
 let backendUrl = "https://lightningdep.azurewebsites.net/api";
 
@@ -232,7 +233,7 @@ class OneCase extends React.Component{
                 />
                 <input name="search" placeholder="search">
                 </input>
-                <button onClick={this.renderCreateDepPage}>Create Deposition</button>
+                <Link to="/createDeposition">Create Deposition</Link>
               </div>
 
               <div className="flex-container">
@@ -257,12 +258,12 @@ class OneCase extends React.Component{
       </div>
     </If>
 
-    <If condition={this.state.displayCreateDeposition}>
+    {/* <If condition={this.state.displayCreateDeposition}>
       <CreateDeposition 
       oneCase={this.props.oneCase}
       displayOneCase={this.displayOneCase} 
     />
-    </If>
+    </If> */}
     </>
     )
   }

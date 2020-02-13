@@ -10,6 +10,7 @@ import { HashRouter, Route, Switch } from 'react-router-dom';
 import Cases from './components/cases/cases';
 import Depositions from './components/depositions/depositions';
 import cases from './components/functional/caseObj';
+import CreateDeposition from './components/cases/oneCase/createDeposition'; 
 
 
 class App extends React.Component{
@@ -116,8 +117,13 @@ class App extends React.Component{
                     cases={cases} 
                     alerts={alerts}
                     userName={this.state.userName}
-                    loggedIn={this.state.loggedIn} /> }
+                    loggedIn={this.state.loggedIn}
+                    displayAllDepositions={this.displayAllDepositions} 
+                  /> }
                   />
+                  <Route path="/createDeposition" render={(props) => <CreateDeposition {...props}
+                    
+                  />} />
                 </Switch>
               </div>
             </If>

@@ -214,9 +214,7 @@ let cases = [{
             },
         ],
         "documents": null,
-        "notAttending":[{
-          "email": "michelle@wealwayswin.com"
-      }]
+        "notAttending":["michelle@wealwayswin.com"]
     }
   ]
 },

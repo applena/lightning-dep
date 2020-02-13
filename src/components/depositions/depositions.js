@@ -1,9 +1,10 @@
 import React from 'react';
 import TimeDropDown from '../library//timeDropDown';
 import './depositions.scss';
-import $ from 'jquery';
 import If from '../library/If';
 import sortBy from '../functional/sortBy';
+import OneDeposition from './oneDeposition/oneDeposition';
+import { Link } from 'react-router-dom';
 
 class Depositions extends React.Component{
   constructor(props) {
@@ -26,11 +27,7 @@ class Depositions extends React.Component{
       displayOneDepositionNotAttendingDefendent: [],
       displayOnePlantiffLawyers: [],
       displayOneDefendentLawyers: [],
-      showPurchaseModal: false,
-      displayDocuments: false,
-      displayExhibits: true,
-      exhibits: [],
-      documents: []
+      id: ''
     };
   }
 
@@ -51,6 +48,7 @@ class Depositions extends React.Component{
   }
 
   displayOneDep = (idx, id) => {
+    this.setState({ id: id })
     let chosenDep = this.state.depositionsArray[idx];
     let courtReporter = `${chosenDep.courtReporter.firstName} ${chosenDep.courtReporter.lastName}`;
 
@@ -67,48 +65,9 @@ class Depositions extends React.Component{
         return;
       }
 
-      // match up the notAttending deposition lawyers with the lawyers on the case
-      // const lawyersNotAttendingPlantiff = file.plantiffLawyers.filter(lawyer => {
-      //   return this.state.depositionsArray[idx].notAttending.includes(lawyer.email);
-      // });
-
-
-      const lawyersNotAttendingPlantiff = [];
-      const lawyersAttendingPlantiff = [];
-      file.plantiffLawyers.forEach(lawyer => {
-        if(chosenDep.notAttending.includes(lawyer.email)){
-          lawyersNotAttendingPlantiff.push(lawyer);
-        } else {
-          lawyersAttendingPlantiff.push(lawyer);
-        };
-      });
-
-      const namesOfLawyersNotAttendingPlantiff = lawyersNotAttendingPlantiff.map(lawyer => `${lawyer.firstName} ${lawyer.lastName}`)
-
-      const lawyersNotAttendingDefendent = [];
-      const lawyersAttendingDefendent = [];
-      file.defendentLawyers.forEach(lawyer => {
-        if(chosenDep.notAttending.includes(lawyer.email)){
-          lawyersNotAttendingDefendent.push(lawyer);
-        } else {
-          lawyersAttendingDefendent.push(lawyer);
-        };
-      });
-
-      // const lawyersNotAttendingDefendent = file.defendentLawyers.filter(lawyer => {
-      //   return this.state.depositionsArray[idx].notAttending.includes(lawyer.email)
-      // });
-
-      const namesOfLawyersNotAttendingDefendent = lawyersNotAttendingDefendent.map(lawyer => `${lawyer.firstName} ${lawyer.lastName}`);
-
-
       this.setState({ 
         displayOneCaseNumber: file.caseNumber,
         displayOneCaseName: file.name,
-        displayOneDepositionNotAttendingDefendent: namesOfLawyersNotAttendingDefendent,
-        displayOneDepositionNotAttendingPlantiff: namesOfLawyersNotAttendingPlantiff,
-        displayOnePlantiffLawyers: lawyersAttendingPlantiff,
-        displayOneDefendentLawyers: lawyersAttendingDefendent
         })
     })
 
@@ -129,61 +88,10 @@ class Depositions extends React.Component{
       displayOneWitnessName: chosenDep.witnessName
     });
 
-    // display the exhibits
-    if(!chosenDep.exhibits.length){
-      this.state.exhibits = "no exhibits available"
-    } else {
-      chosenDep.exhibits.forEach((exhibit, idx) => {
-        this.state.exhibits.push(
-          <li key={idx}>
-            <span>{exhibit.name}</span>
-            <span>{idx}</span>
-            <span>{exhibit.documentType}</span>
-            <span>🔐</span>
-            <span>...</span>
-          </li>
-        )
-      })
-    };
-  }
-
-  purchaseModal = () => {
-    this.setState({ showPurchaseModal: true });
-  }
-
-  closePurchaseModal = () => {
-    this.setState({ showPurchaseModal: false });
   }
 
   updateDepositionArraySorted = (array) => {
     this.setState({ visibleDepositionsArray: array })
-  }
-
-  displayDocuments = () => {
-    if(this.state.oneDeposition.documents === null){
-      this.state.documents = "no documents available"
-    } else {
-      this.state.oneDeposition.documents.forEach((doc, idx) => {
-        this.state.documents.push(
-          <li key={idx}>
-            <h4>document info goes here</h4>
-          </li>
-        )
-      })
-    };
-
-    this.setState({
-      displayDocuments: true,
-      displayExhibits: false
-    })
-  }
-
-  displayExhibits = () => {
-
-    this.setState({
-      displayDocuments: false,
-      displayExhibits: true
-    })
   }
 
   displayUpcoming = () => {
@@ -210,59 +118,10 @@ class Depositions extends React.Component{
     // link to create deposition
   }
 
-  processPayment = () => {
-    // call server to get session ID
-    let serverURL = "";
-    $.getJSON(`${serverURL}/checkoutSessionId`, function(checkoutSessionId) {
-      var stripe = window.Stripe('pk_test_rmguZ1IdJrE01JOAs4bgz8Mj005tMPrNc3');
-      stripe.redirectToCheckout({
-        // Make the id field from the Checkout Session creation API response
-        // available to this file, so you can provide it as parameter here
-        // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
-        sessionId: checkoutSessionId
-      }).then(function (result) {
-        console.log(result);
-  
-        // result.error.message;
-      }).catch(error => {
-        console.error(error);
-      })
-    });
-      
-  }
-
     
   render(){
     console.log('depositions array length', this.state.depositionsArray.length);
     console.log('visible dep array length', this.state.visibleDepositionsArray);
-
-      // plantiff lawyers
-      let plantiffLawyers = [];
-      this.state.displayOneDepositionNotAttendingPlantiff.map((lawyer, idx) => {
-        plantiffLawyers.push(<li key={idx}>
-          <span>X</span><span>{lawyer}</span>
-        </li>)
-      })
-
-      this.state.displayOnePlantiffLawyers.forEach((lawyer) => {
-        plantiffLawyers.push(<li key={lawyer.id}>
-          <span>✔️</span><span>{lawyer.firstName} {lawyer.lastName}</span>
-        </li>)
-      })
-      
-      // defendent lawyers
-      let defendentLawyers = []
-      this.state.displayOneDepositionNotAttendingDefendent.map((lawyer, idx) => {
-        defendentLawyers.push(<li key={idx}>
-          <span>X</span><span>{lawyer}</span>
-        </li>)
-      })
-
-      this.state.displayOneDefendentLawyers.forEach((lawyer) => {
-        defendentLawyers.push(<li key={lawyer.id}>
-          <span>✔️</span><span>{lawyer.firstName} {lawyer.lastName}</span>
-        </li>)
-      })
 
       return(
         <>
@@ -282,7 +141,8 @@ class Depositions extends React.Component{
                 />
 
                 <div className="flex-container">
-                  <button onSubmit={this.createDeposition}>Create Deposition</button>
+                  <Link to="/createDeposition">Create Deposition</Link>
+
                   <input type="text" defaultValue="Search"></input>
                 </div>
 
@@ -308,80 +168,15 @@ class Depositions extends React.Component{
             </div>
           </If>
           <If condition={this.props.showOneDepostion}>
-            <div id="one-deposition">
-              <h4>Past Depositions - Lawyers</h4>
-              <span onClick={this.props.displayAllDepositions} className="border-bottom">&lt; Depositions</span>
-              <div className="felx-container border-bottom">
-                <div>
-                  <span>{this.state.displayOneSchedule}</span>
-                  <span id="witness-name">{this.state.displayOneWitnessName}</span>
-                </div>
-                <a id="rough-transcript" href="">Download rough transcript</a>
-              </div>
-              
-              <div className="felx-container">
-                <div id="dep-details">
-                  <p>Represented by</p>
-                  <h4>{this.props.userName}</h4>
-                  <p>{this.state.displayOneCaseNumber}</p>
-                  <h4>{this.state.displayOneCaseName}</h4>
-
-                  <div>Attending</div>
-                  <div className="flex-container">
-                    <ul>
-                      {plantiffLawyers}
-                    </ul>
-                    <ul>
-                      {defendentLawyers}
-                    </ul>
-                  </div>
-                </div>
-
-
-
-                <div onClick={this.purchaseModal} id="purchase">
-                  <div>
-                    <span>📄 Transcript</span> 
-                    <span>~$300 - $390</span>
-                  </div>
-                  <div>
-                    <span>📹 Video</span>
-                    <span>~$200</span>
-                  </div>
-                </div>
-
-                <If condition={this.state.showPurchaseModal}>
-                  <div id="buy">
-                    <span onClick={this.closePurchaseModal}>X</span>
-                    <button onClick={this.processPayment}>BUY</button>
-                  </div>
-                </If>
-
-
-              </div>
-            <div id="court-reporter">
-              <p>Court Reporter</p>
-              <span>{this.state.displayOneCourtReporter}</span>
-            </div>
-
-            <div id="toggle-display">
-              <p onClick={this.displayDocuments}>Doucments</p>
-              <p onClick={this.displayExhibits}>Exhibits</p>
-            </div>
-
-              <If condition={this.state.displayDocuments}>
-                  <ul>
-                    {this.state.documents}
-                  </ul>
-              </If>
-
-              <If condition={this.state.displayExhibits}>
-                  <ul>
-                    {this.state.exhibits}
-                  </ul>
-              </If>
-
-            </div>
+            <OneDeposition
+              displayAllDepositions={this.props.displayAllDepositions} 
+              oneDeposition={this.state.oneDeposition}
+              caseFiles={this.props.caseFiles}
+              depId={this.state.id}
+              userName={this.props.userName}
+              documents={this.state.oneDeposition.documents}
+              exhibits={this.state.oneDeposition.exhibits}
+            />
 
           </If>
         </>
