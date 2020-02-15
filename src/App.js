@@ -11,6 +11,7 @@ import Cases from './components/cases/cases';
 import Depositions from './components/depositions/depositions';
 import cases from './components/functional/caseObj';
 import CreateDeposition from './components/cases/oneCase/createDeposition'; 
+import OneDeposition from './components/depositions/oneDeposition/oneDeposition';
 
 
 class App extends React.Component{
@@ -25,7 +26,8 @@ class App extends React.Component{
       showDepositions: true,
       showOneDepostion: false,
       showCases: true,
-      showOneCase: false
+      showOneCase: false,
+      depId: ''
     };
   }
 
@@ -59,11 +61,15 @@ class App extends React.Component{
      })
   }
 
-  displayOneDeposition = () => {
-    this.setState({
-      showDepositions: false,
-      showOneDepostion: true
-    })
+  // displayOneDeposition = () => {
+  //   this.setState({
+  //     showDepositions: false,
+  //     showOneDepostion: true
+  //   })
+  // }
+
+  setDepId = (id) => {
+    this.setState({ depId: id });
   }
 
   // componentWillMount = () => {
@@ -105,13 +111,19 @@ class App extends React.Component{
                     showCases={this.state.showCases}
                     showOneCase={this.state.showOneCase}
                   />} />
+                  <Route path="/depositions/:id" render={(props) => <OneDeposition {...props}
+                    displayAllDepositions={this.props.displayAllDepositions} 
+                    caseFiles={cases}
+                    depId={this.state.depId}
+                    userName={this.props.userName}
+                  />}/>
                   <Route path="/depositions" render={(props) => <Depositions {...props} 
                     userName={this.state.userName}
                     caseFiles={cases} 
                     displayAllDepositions={this.displayAllDepositions}
-                    displayOneDeposition={this.displayOneDeposition}
                     showDepositions={this.state.showDepositions}
                     showOneDepostion={this.state.showOneDepostion}
+                    setDepId={this.setDepId}
                   />} />
                   <Route path="/" render={(props) => <Dashboard {...props}
                     cases={cases} 
@@ -119,6 +131,7 @@ class App extends React.Component{
                     userName={this.state.userName}
                     loggedIn={this.state.loggedIn}
                     displayAllDepositions={this.displayAllDepositions} 
+                    setDepId={this.setDepId}
                   /> }
                   />
                   <Route path="/createDeposition" render={(props) => <CreateDeposition {...props}

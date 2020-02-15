@@ -3,8 +3,7 @@ import TimeDropDown from '../library//timeDropDown';
 import './depositions.scss';
 import If from '../library/If';
 import sortBy from '../functional/sortBy';
-import OneDeposition from './oneDeposition/oneDeposition';
-import { Link } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
 
 class Depositions extends React.Component{
   constructor(props) {
@@ -14,20 +13,7 @@ class Depositions extends React.Component{
       upcomingDepositions: [],
       pastDepositions: [],
       visibleDepositionsArray: [],
-      items: [],
-      oneDeposition: {},
-      displayOneSchedule: "",
-      displayOneWitnessName: "",
-      displayOneRepresentedBy: "",
-      displayOneCaseNumber: "",
-      displayOneCaseName: "",
-      displayOneCourtReporter: "",
-      displayOneCaseNumber: "",
-      displayOneDepositionNotAttendingPlantiff: [],
-      displayOneDepositionNotAttendingDefendent: [],
-      displayOnePlantiffLawyers: [],
-      displayOneDefendentLawyers: [],
-      id: ''
+      items: []
     };
   }
 
@@ -47,47 +33,9 @@ class Depositions extends React.Component{
 
   }
 
-  displayOneDep = (idx, id) => {
-    this.setState({ id: id })
-    let chosenDep = this.state.depositionsArray[idx];
-    let courtReporter = `${chosenDep.courtReporter.firstName} ${chosenDep.courtReporter.lastName}`;
-
-    this.setState({ 
-      oneDeposition: chosenDep,
-      displayOneCourtReporter: courtReporter
-    });
-
-    let date = `${chosenDep.date.slice(28)} ${new Date(chosenDep.date).toDateString()}`;
-
-    this.props.caseFiles.forEach(file => {
-      const depFiles = file.depositions.filter(dep => dep.id === id)
-      if(!depFiles.length){
-        return;
-      }
-
-      this.setState({ 
-        displayOneCaseNumber: file.caseNumber,
-        displayOneCaseName: file.name,
-        })
-    })
-
-
-    if(!this.state.oneDeposition.documents === 'null'){
-      this.setState = ({ displayDocuments: this.state.oneDeposition.documents });
-    }
-
-
-    if(this.state.oneDeposition.exhibits === 'null'){
-      this.setState = ({ displayExhibits: this.state.oneDeposition.exhibits });
-    }
-
-    this.props.displayOneDeposition();
-
-    this.setState({ 
-      displayOneSchedule: date,
-      displayOneWitnessName: chosenDep.witnessName
-    });
-
+  displayOneDep = (id) => {
+    this.props.setDepId(id);
+    // this.props.displayOneDeposition();
   }
 
   updateDepositionArraySorted = (array) => {
@@ -125,7 +73,7 @@ class Depositions extends React.Component{
 
       return(
         <>
-          <If condition={this.props.showDepositions}>
+          <If condition={this.props.displayAllDepositions}>
             <div id="depositions">
               <h4>Depostions</h4>
 
@@ -156,28 +104,19 @@ class Depositions extends React.Component{
               </div>
               <ul>
                 {this.state.visibleDepositionsArray.map((deposition, idx) => 
-                <li onClick={() => this.displayOneDep(idx, deposition.id)} className="flex-container" data-index={idx} key={idx}>
-                  <span className="witness">{deposition.witnessName}</span>
-                  <span className="schedule">{deposition.date.slice(28)} {new Date(deposition.date).toDateString()}</span>
-                  <span className="court-reporter">{deposition.courtReporter.firstName} {deposition.courtReporter.lastName}</span>
-                  <span className="owner">owner</span>
-                  <span className="more-dots">...</span>
+                <li onClick={() => this.displayOneDep(deposition.id)}className="flex-container" data-index={idx} key={idx}>
+                  <Link to={`/depositions/${deposition.id}`}>
+                    <span className="witness">{deposition.witnessName}</span>
+                    <span className="schedule">{deposition.date.slice(28)} {new Date(deposition.date).toDateString()}</span>
+                    <span className="court-reporter">{deposition.courtReporter.firstName} {deposition.courtReporter.lastName}</span>
+                    <span className="owner">owner</span>
+                    <span className="more-dots">...</span>
+                  </Link>
                 </li>
                 )}
               </ul>
+              
             </div>
-          </If>
-          <If condition={this.props.showOneDepostion}>
-            <OneDeposition
-              displayAllDepositions={this.props.displayAllDepositions} 
-              oneDeposition={this.state.oneDeposition}
-              caseFiles={this.props.caseFiles}
-              depId={this.state.id}
-              userName={this.props.userName}
-              documents={this.state.oneDeposition.documents}
-              exhibits={this.state.oneDeposition.exhibits}
-            />
-
           </If>
         </>
     )
