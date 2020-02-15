@@ -8,9 +8,7 @@ class ActiveCases extends React.Component{
     super(props);
     this.state = {
       activeCases: [],
-      oneActiveCase: [],
-      displayDashboard: true,
-      displayOneActiveCase: false
+      oneActiveCase: []
     };
   }
 
@@ -24,14 +22,19 @@ class ActiveCases extends React.Component{
   
   displayOneActiveCase = (idx) => {
     let oneActiveCase = this.state.activeCases[idx];
-    this.setState({ oneActiveCase: oneActiveCase });
+
+    this.props.displayOneActiveCase(idx);
+
+    this.setState({ 
+      oneActiveCase: oneActiveCase,
+     });
   }
 
   render(){
 
     return(
       <div id="active-cases">
-        <If condition={this.state.displayDashboard}>
+        <If condition={this.props.displayDashboard}>
           <div id="active-cases">
             <h4>Active Cases</h4>
             <div className="flex-container">
@@ -56,7 +59,7 @@ class ActiveCases extends React.Component{
           </div>  
         </If>
 
-        <If condition={this.state.displayOneActiveCase}>
+        <If condition={this.props.displayOneActiveCaseCondition}>
           <OneActiveCase />
         </If>
       </div>

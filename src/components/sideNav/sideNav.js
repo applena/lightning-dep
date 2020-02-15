@@ -6,7 +6,6 @@ import './sideNav.scss'
 
 class SideNav extends React.Component{
   render(){
-    console.log('sideNav', this.props)
     return(
       <div id="side-nav">
         <ProfilePic userName={this.props.userName} />

@@ -3,7 +3,6 @@ import TimeDropDown from '../../library/timeDropDown';
 import '../cases.scss';
 import If from '../../library/If';
 import sortBy from '../../functional/sortBy';
-import CreateDeposition from './createDeposition';
 import { Link } from 'react-router-dom';
 
 let backendUrl = "https://lightningdep.azurewebsites.net/api";

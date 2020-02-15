@@ -1,16 +1,13 @@
 import React from 'react';
 import './upcomingDepositions.scss';
 import If from '../../library/If';
-import OneDeposition from '../../depositions/oneDeposition/oneDeposition';
+import { Link } from 'react-router-dom';
 
 class UpcomingDepositions extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
-      upcomingDepositions: [],
-      displayOneDeposition: false,
-      oneDeposition: {},
-      depId: ''
+      upcomingDepositions: []
     };
   }
 
@@ -33,21 +30,13 @@ class UpcomingDepositions extends React.Component{
     })
   }
 
-  displayOneDeposition = (idx, id) => {
-    let oneDeposition = this.state.upcomingDepositions[idx];
-
-    this.props.hideDashboard();
-
-    this.setState({ 
-      depId: id,
-      oneDeposition: oneDeposition, 
-      displayOneDeposition: true
-    });
+  displayOneDep = (id) => {
+    this.props.setDepId(id);
+    // this.props.displayOneDeposition();
   }
 
 
   render(){
-    console.log('🇸🇭', this.state.depId)
     return(
       <>
       <If condition={this.props.displayDashboard}>
@@ -61,27 +50,17 @@ class UpcomingDepositions extends React.Component{
             </div>
           <ul>
             {this.state.upcomingDepositions.map((deposition, idx) => (
-              <li onClick={() => this.displayOneDeposition(idx, deposition.id)} className="flex-container" key={idx}>
-                <span className="witness">{deposition.witnessName}</span>
-                <span className="schedule">{deposition.date.slice(28)} {new Date(deposition.date).toDateString()}</span>
-                <span className="court-reporter">{deposition.courtReporter.firstName} {deposition.courtReporter.lastName}</span>
-                <span className="join-button">Join</span>
+              <li onClick={() => this.displayOneDep(deposition.id)}className="flex-container" key={idx}>
+                <Link to={`/depositions/${deposition.id}`}>
+                  <span className="witness">{deposition.witnessName}</span>
+                  <span className="schedule">{deposition.date.slice(28)} {new Date(deposition.date).toDateString()}</span>
+                  <span className="court-reporter">{deposition.courtReporter.firstName} {deposition.courtReporter.lastName}</span>
+                  <span className="join-button">Join</span>
+                </Link>
               </li>
             ))}
           </ul>
         </div>
-      </If>
-
-      <If condition={this.state.displayOneDeposition}>
-        <OneDeposition
-          displayAllDepositions={this.props.displayAllDepositions} 
-          oneDeposition={this.state.oneDeposition}
-          caseFiles={this.props.cases}
-          depId={this.state.depId}
-          userName={this.props.userName}
-          documents={this.state.oneDeposition.documents}
-          exhibits={this.state.oneDeposition.exhibits}
-        />
       </If>
       </>
     )

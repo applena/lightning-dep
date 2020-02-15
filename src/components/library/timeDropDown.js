@@ -24,9 +24,6 @@ class Dropdown extends React.Component{
     } else {
       this.setState({ displayCustomDate: false });
       let beginningDate = new Date('1950-01-01');
-      let currentYear = new Date().getYear() + 1900;
-      let currentDay = new Date().getDate();
-      let currentMonth = new Date().getMonth() + 1;
       let endDate = new Date();
       let sortedArray = [];
 
