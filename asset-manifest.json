@@ -1,24 +1,25 @@
 {
   "files": {
-    "main.css": "/lightning-dep/static/css/main.c9697a25.chunk.css",
-    "main.js": "/lightning-dep/static/js/main.df231399.chunk.js",
-    "main.js.map": "/lightning-dep/static/js/main.df231399.chunk.js.map",
+    "main.css": "/lightning-dep/static/css/main.bad7e2d6.chunk.css",
+    "main.js": "/lightning-dep/static/js/main.aff3c4ce.chunk.js",
+    "main.js.map": "/lightning-dep/static/js/main.aff3c4ce.chunk.js.map",
     "runtime-main.js": "/lightning-dep/static/js/runtime-main.b67146e8.js",
     "runtime-main.js.map": "/lightning-dep/static/js/runtime-main.b67146e8.js.map",
-    "static/js/2.59c26a4c.chunk.js": "/lightning-dep/static/js/2.59c26a4c.chunk.js",
-    "static/js/2.59c26a4c.chunk.js.map": "/lightning-dep/static/js/2.59c26a4c.chunk.js.map",
+    "static/js/2.b024a73a.chunk.js": "/lightning-dep/static/js/2.b024a73a.chunk.js",
+    "static/js/2.b024a73a.chunk.js.map": "/lightning-dep/static/js/2.b024a73a.chunk.js.map",
     "index.html": "/lightning-dep/index.html",
-    "precache-manifest.229c56a5ba2bc7eac8073e98eb2f52f8.js": "/lightning-dep/precache-manifest.229c56a5ba2bc7eac8073e98eb2f52f8.js",
+    "precache-manifest.18990e29cb2475293d463abd4a0fa06a.js": "/lightning-dep/precache-manifest.18990e29cb2475293d463abd4a0fa06a.js",
     "service-worker.js": "/lightning-dep/service-worker.js",
-    "static/css/main.c9697a25.chunk.css.map": "/lightning-dep/static/css/main.c9697a25.chunk.css.map",
-    "static/js/2.59c26a4c.chunk.js.LICENSE": "/lightning-dep/static/js/2.59c26a4c.chunk.js.LICENSE",
+    "static/css/main.bad7e2d6.chunk.css.map": "/lightning-dep/static/css/main.bad7e2d6.chunk.css.map",
+    "static/js/2.b024a73a.chunk.js.LICENSE": "/lightning-dep/static/js/2.b024a73a.chunk.js.LICENSE",
     "static/media/courtReporter.jpg": "/lightning-dep/static/media/courtReporter.11bb930f.jpg",
-    "static/media/headshot-dep.jpg": "/lightning-dep/static/media/headshot-dep.d71f4f5f.jpg"
+    "static/media/headshot-dep.jpg": "/lightning-dep/static/media/headshot-dep.d71f4f5f.jpg",
+    "static/media/logo.jpg": "/lightning-dep/static/media/logo.37e8a97d.jpg"
   },
   "entrypoints": [
     "static/js/runtime-main.b67146e8.js",
-    "static/js/2.59c26a4c.chunk.js",
-    "static/css/main.c9697a25.chunk.css",
-    "static/js/main.df231399.chunk.js"
+    "static/js/2.b024a73a.chunk.js",
+    "static/css/main.bad7e2d6.chunk.css",
+    "static/js/main.aff3c4ce.chunk.js"
   ]
 }

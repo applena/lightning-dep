@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "d35982a305d9775a8d4488cd09ae74f9",
+    "revision": "a12b37bf2fb3563b480cd9e76e38ba05",
     "url": "/lightning-dep/index.html"
   },
   {
-    "revision": "866376f81ca82a6e7b32",
-    "url": "/lightning-dep/static/css/main.c9697a25.chunk.css"
+    "revision": "f9eb1c2586aa1713bd3e",
+    "url": "/lightning-dep/static/css/main.bad7e2d6.chunk.css"
   },
   {
-    "revision": "e8a68344c0bcc9a9621d",
-    "url": "/lightning-dep/static/js/2.59c26a4c.chunk.js"
+    "revision": "120e6263809c548079d4",
+    "url": "/lightning-dep/static/js/2.b024a73a.chunk.js"
   },
   {
     "revision": "c59f0544f1841cc5018e2e814d4e981b",
-    "url": "/lightning-dep/static/js/2.59c26a4c.chunk.js.LICENSE"
+    "url": "/lightning-dep/static/js/2.b024a73a.chunk.js.LICENSE"
   },
   {
-    "revision": "866376f81ca82a6e7b32",
-    "url": "/lightning-dep/static/js/main.df231399.chunk.js"
+    "revision": "f9eb1c2586aa1713bd3e",
+    "url": "/lightning-dep/static/js/main.aff3c4ce.chunk.js"
   },
   {
     "revision": "a1871227a90a9d408983",
@@ -30,5 +30,9 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "d71f4f5ff610d148181a8c54669f520d",
     "url": "/lightning-dep/static/media/headshot-dep.d71f4f5f.jpg"
+  },
+  {
+    "revision": "37e8a97d09ee7c1aa7a4a999992fa9aa",
+    "url": "/lightning-dep/static/media/logo.37e8a97d.jpg"
   }
 ]);
