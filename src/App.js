@@ -10,7 +10,6 @@ import Dashboard from './components/dashboard/dashboard';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import Cases from './components/cases/cases';
 import Depositions from './components/depositions/depositions';
-import lawyer from './components/functional/lawyerObj';
 import CreateDeposition from './components/cases/oneCase/createDeposition'; 
 import OneDeposition from './components/depositions/oneDeposition/oneDeposition';
 import OneCase from './components/cases/oneCase/oneCase'; 
@@ -21,7 +20,9 @@ class App extends React.Component{
   constructor(props) {
     super(props);
     // use jsonwebtoken library to examine the JWT COOKIE, see if it is valid and get the username out of it
-    const loggedIn = !!Cookie.get('JWT');
+    // const loggedIn = !!Cookie.get('JWT');
+    const loggedIn = false;
+    console.log('🥉',Cookie.get('JWT'));
 
     let alerts = [{title: 'New Document Available', description: '3;17-cv-0019087'}, {title: 'Deposition Transcript Available', description: 'Jane Doe'}, {title: 'Deposition Transcript Available', description: 'John Doe'}]
 
@@ -91,12 +92,10 @@ class App extends React.Component{
   //   this.setState({ alerts: 'new alerts will go here' })
   // }
 
-  componentWillMount = () => {
-
-  }
 
   render(){
   console.log('app render')
+  console.log('am I logged in', this.state.loggedIn)
     return (
       <HashRouter basename='/'>
         <div className="App">

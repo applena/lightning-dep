@@ -8,7 +8,6 @@ var jwt = require('jsonwebtoken');
 window.$ = $;
 
 let backendUrl = "https://lightningdep.azurewebsites.net/api";
-// let backendUrl = 'https://lightningdep.azurewebsites.net/api/Dashboard?id=1&role=lawyer'
 
 class SignUp extends React.Component{
   constructor(props) {
@@ -63,29 +62,50 @@ class SignUp extends React.Component{
     } else {
       data = {firstName:firstName, lastName:lastName, email:email, password:password, state:state, paralegalFirm:paralegalFirm, lawyerEmail:lawyerEmail};
     }
-    console.log('the data object', data)
+    // console.log('the data object', data)
     let configs = {
       method: "POST",
       type: "POST",
-      url: `${backendUrl}/Register/lawyer`,
+      url: `${backendUrl}/Register/${this.state.roleTab}`,
       data: data,
       success: data => {
         // if data is bad abort
         console.log('data!!!!!!!!!!', data)
         this.login(data)
       },
+      error: function (jqXHR, textStatus, errorThrown){
+        console.log('was not successful getting data from ajax')
+      },
       contentType: "application/json; charset=utf-8"
     };
 
-    console.log(configs);
-    // $.ajax(configs)
+    // console.log(configs);
+    $.ajax(configs)
 
     var request = new XMLHttpRequest();
-    request.open('POST', `${backendUrl}/Register/lawyer`, true);
-    request.setRequestHeader('Content-Type', "application/json; charset=utf-8");
+    request.open('GET', '/my/url', true);
 
-    console.log('data!!!!!!!!', data);
-    request.send(JSON.stringify(data));
+    request.onload = function() {
+      if (this.status >= 200 && this.status < 400) {
+        // Success!
+        var resp = this.response;
+      } else {
+        // We reached our target server, but it returned an error
+
+      }
+    };
+
+    request.onerror = function() {
+      // There was a connection error of some sort
+    };
+
+    request.send();
+
+  //   var request = new XMLHttpRequest();
+  //   request.open('POST', `${backendUrl}/Register/${this.state.roleTab}`, true);
+  //   request.setRequestHeader('Content-Type', "application/json; charset=utf-8");
+
+  //   request.send(JSON.stringify(data));
 
   }
 
@@ -144,7 +164,7 @@ class SignUp extends React.Component{
   }
 
   render(){
-    console.log(this.state.roleTab, "💚")
+    console.log(this.state.roleTab, "💚", "not logged in")
     return(
       <>
         <div id="container" className={this.state.roleTab}>
