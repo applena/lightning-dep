@@ -2,26 +2,30 @@ import React from 'react';
 import '../cases.scss';
 import $ from 'jquery';
 import If from '../../library/If';
+import { withRouter } from "react-router";
 
 let backendUrl = "https://lightningdep.azurewebsites.net/api";
 
 class CreateDeposition extends React.Component{
+  
   constructor(props) {
     super(props);
-    this.state = {
-      courtReporters: [],
-      displayFuzzySearch: false,
-      visibleCRArray: []
-    }
-  }
 
-  componentWillMount = () => {
+    const caseNumber = this.props.match.params.caseNum;
+
+    console.log('😈', caseNumber, this.props.match.params)
     // load in all the court reporters so that user can do a fuzzy search
     // cr should be an array of names: ['Janelle Reporter']
     $.getJSON(`${backendUrl}/courtReporters`, function(cr) {
       this.setState({ courtReporters: cr, visibleCRArray: cr });
     })
 
+    this.state = {
+      caseNumber: caseNumber,
+      courtReporters: [],
+      displayFuzzySearch: false,
+      visibleCRArray: []
+    }
   }
 
   createDeposition = (e) => {
@@ -61,13 +65,12 @@ class CreateDeposition extends React.Component{
   }
 
   render(){
-    console.log('props.oneCase', this.props.oneCase)
     return(
       <div id="create-deposition">
         <form onSubmit={this.createDeposition}>
         <h3>Create Deposition</h3>
           <label>Case Number
-            <input type="text" name="caseNumber" defaultValue={this.props.oneCase.caseNumber}required></input>
+            <input type="text" name="caseNumber" placeholder={this.state.caseNumber} defaultValue={this.state.caseNumber} required></input>
           </label>
 
           <label>Witness
@@ -116,4 +119,4 @@ class CreateDeposition extends React.Component{
   }
 }
 
-export default CreateDeposition;
+export default withRouter(CreateDeposition);

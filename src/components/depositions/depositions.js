@@ -3,11 +3,15 @@ import TimeDropDown from '../library//timeDropDown';
 import './depositions.scss';
 import If from '../library/If';
 import sortBy from '../functional/sortBy';
-import { Link, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import NextPage from '../functional/nextPage';
+import search from '../functional/search';
 
 class Depositions extends React.Component{
   constructor(props) {
     super(props);
+
+    
     this.state = {
       depositionsArray: [],
       upcomingDepositions: [],
@@ -17,25 +21,19 @@ class Depositions extends React.Component{
     };
   }
 
-  componentWillMount () {
+  componentDidMount = () => {
     const script = document.createElement("script");
-
+  
     script.src = "https://js.stripe.com/v3/";
     script.async = true;
-
+  
     document.body.appendChild(script);
-
-    this.props.caseFiles.forEach(file=> {
+  
+    this.props.lawyerObj.cases.forEach(file=> {
       this.state.depositionsArray.push(...file.depositions)
     })
-
+  
     this.updateDepositionArraySorted(this.state.depositionsArray);
-
-  }
-
-  displayOneDep = (id) => {
-    this.props.setDepId(id);
-    // this.props.displayOneDeposition();
   }
 
   updateDepositionArraySorted = (array) => {
@@ -43,39 +41,48 @@ class Depositions extends React.Component{
   }
 
   displayUpcoming = () => {
-    let currentYear = new Date().getYear() + 1900;
-    let currentDay = new Date().getDate();
-    let currentMonth = new Date().getMonth() + 1;
-    let endDate = `${currentYear}-${currentMonth}-${currentDay}`;
+    let endDate = Date.now();
+    let beginning = new Date('1970-01-01');
 
-    let sortedArray = sortBy('1970-01-01', endDate, 'upcoming', this.state.depositionsArray);
+    let sortedArray = sortBy(beginning, endDate, 'upcoming', this.state.depositionsArray);
     this.updateDepositionArraySorted(sortedArray);
   }
 
   displayPast = () => {
-    let currentYear = new Date().getYear() + 1900;
-    let currentDay = new Date().getDate();
-    let currentMonth = new Date().getMonth() + 1;
-    let endDate = `${currentYear}-${currentMonth}-${currentDay}`;
+    let endDate = Date.now();
+    let beginning = new Date('1970-01-01');
 
-    let sortedArray = sortBy('1970-01-01', endDate, 'past', this.state.depositionsArray);
+    let sortedArray = sortBy(beginning, endDate, 'past', this.state.depositionsArray);
     this.updateDepositionArraySorted(sortedArray);
   }
 
-  createDeposition = () => {
-    // link to create deposition
+  displayNextPage = () => {
+    let nextPage = NextPage(this.state.depositionsArray, this.state.index);
+    this.setState({
+      index: this.state.index + 10,
+      visibleDepositionsArray: nextPage
+    })
+  }
+
+  runSearch = (e) => {
+    e.preventDefault();
+    let searchResults = search(e, this.state.visibleDepositionsArray);
+    this.setState({ visibleDepositionsArray: searchResults })
   }
 
     
   render(){
-    console.log('depositions array length', this.state.depositionsArray.length);
-    console.log('visible dep array length', this.state.visibleDepositionsArray);
+    // console.log('depositions array length', this.state.depositionsArray.length);
+    // console.log('visible dep array length', this.state.visibleDepositionsArray);
 
       return(
         <>
           <If condition={this.props.displayAllDepositions}>
             <div id="depositions">
-              <h4>Depostions</h4>
+              <div className="flex-container header">
+                <h4>Depostions</h4>
+                <Link className="createDep" to="/createDeposition">Create Deposition</Link>
+              </div>
 
               <div className="flex-container dep-top">
                 <div className="upcomming-past-toggle">
@@ -89,25 +96,26 @@ class Depositions extends React.Component{
                 />
 
                 <div className="flex-container">
-                  <Link to="/createDeposition">Create Deposition</Link>
-
-                  <input type="text" defaultValue="Search"></input>
+                  <form onSubmit={this.runSearch}>
+                    <input type="text" name="search" defaultValue="Search"></input>
+                  </form>
                 </div>
 
               </div>
 
-              <div className='felx-container'>
+              <div className='felx-container headers'>
                 <span>Name</span>
                 <span>Schedule</span>
                 <span>Court Reporter</span>
                 <span>Owner</span>
+                <span> </span>
               </div>
               <ul>
                 {this.state.visibleDepositionsArray.map((deposition, idx) => 
-                <li onClick={() => this.displayOneDep(deposition.id)}className="flex-container" data-index={idx} key={idx}>
-                  <Link to={`/depositions/${deposition.id}`}>
+                <li data-index={idx} key={idx}>
+                  <Link className="table-container" to={`/depositions/${deposition.id}`}>
                     <span className="witness">{deposition.witnessName}</span>
-                    <span className="schedule">{deposition.date.slice(28)} {new Date(deposition.date).toDateString()}</span>
+                    <span className="schedule date">{deposition.date.slice(28)} <br />{new Date(deposition.date).toDateString()}</span>
                     <span className="court-reporter">{deposition.courtReporter.firstName} {deposition.courtReporter.lastName}</span>
                     <span className="owner">owner</span>
                     <span className="more-dots">...</span>
@@ -115,7 +123,7 @@ class Depositions extends React.Component{
                 </li>
                 )}
               </ul>
-              
+              <button onClick={this.displayNextPage}>next</button>
             </div>
           </If>
         </>

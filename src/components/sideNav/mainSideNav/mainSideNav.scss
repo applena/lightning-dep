@@ -8,16 +8,18 @@
   ul li{
     list-style-type: none;
     padding: .2em;
+    font-size: .8em;
 
     a{
       display: inline-block;
       width: calc(100% - 40px);
       height: 1.4em;
-      padding-left: 40px;
+      padding-left: 1em;
     }
 
-    a:hover {
-      background-color: lightgray;
-    }
+  }
+  
+  li:hover {
+    background-color: lightgray;
   }
 }

@@ -1,0 +1,52 @@
+#active-cases{
+  h5{
+    font-size: 10px;  
+    font-weight: normal;
+    margin-bottom: .2em;
+  }
+
+  .join-button{
+    border: 1px solid black;
+    padding: .5em;
+  }
+
+  ul{
+    margin-top: .2em;
+    padding-left: 0;
+    font-size: .8em;
+    width: 100%;
+
+    li:hover{
+      background-color: lightgray;
+    }
+
+    li.display-table{
+      border: 1px solid black;
+      padding: 1em;
+      overflow: auto;
+      display: table;
+      width: 93%;
+
+      div{
+        display: table-cell;
+        width:  22%;
+      }
+
+      .more-dots{
+        width: 1%;
+      }
+
+      .case-depositions{
+        width: 15%;
+      }
+
+      .case-name{
+        width: 15%;
+      }
+
+      .case-court{
+        width:17%;
+      }
+    }
+  }
+}

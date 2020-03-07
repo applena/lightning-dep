@@ -2,12 +2,17 @@
   width: 100%;
   border-left: 2px solid black;
 
+  .header{
+    width: 95%;
+  }
+
   h4{
     margin-left:1em;
   }
 
   .flex-container{
     display: flex;
+    align-items: baseline;
 
     .flex-container{
       display: flex;
@@ -17,36 +22,86 @@
 
   }
 
+  .createDep{
+    border: 1px solid black;
+    padding: .5em 1em;
+    font-size: .8em;
+  }
+
+  .createDep:hover{
+    background-color: lightgray;
+  }
+
   .dep-top{
     margin-bottom: 1em;
+    width: 95%;
   }
 
   .upcomming-past-toggle{
-    border: 1px solid black;
-    width: 30%;
+    width: 0;
     display: flex;
     justify-content: space-evenly;
     margin-right: 1em;
     margin-left: 1em;
+    display: inline-block;
 
     span{
       padding: .5em 1em;
-      border-left: 1px solid black;
+      border: 1px solid black;
     }
 
     span:hover{
       background-color: lightgray;
     }
+
+  }
+  input{
+    padding: .5em 1em;
   }
 
   .felx-container{
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-left: 1em;
+    padding-right: 1em;
+  }
+
+  .headers{
+    span{
+      font-size: 10px;  
+      font-weight: normal;
+      margin-bottom: .2em;
+    }
   }
 
   ul{
-
+    margin-top: .2em;
     padding-left:1em;
+    width: 93%;
+
+    .table-container{
+      display: table;
+      width: 100%;
+
+      span{
+        display: table-cell;  
+        width: 20%;
+        font-size: .8em;
+      }
+
+      .date{
+        width: 28%;
+      }
+
+      .witness{
+        width: 22%;
+      }
+
+      .court-reporter{
+        width: 33%;
+      }
+    }
 
     li{
       border: 2px solid black;
@@ -74,6 +129,7 @@
   .felx-container{
     display: flex;
     justify-content: space-between;
+    align-items: center;
   }
 
   span{
@@ -82,18 +138,75 @@
   }
 
   .border-bottom{
-    border-bottom:1px solid black
+    font-size: .8em;
+    border-bottom: 1px solid black;
+    width: 97%;
+
+    a{
+      text-decoration: underline;
+    }
   }
+
+  .flex{
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    border-bottom: none;
+
+    #dep-details{
+      padding-left: 1em;
+  
+      p{
+        margin-bottom: 0;
+        font-size: .7em;
+      }
+  
+      h4{
+        margin-top: 0;
+      }
+  
+      .flex-container{
+        display: flex;
+  
+      }
+
+      .lawyers ul{
+        padding-left:0;
+
+        span{
+          padding: 0;
+        }
+      }
+
+    }
+
+    .lawyers{
+      ul.def-lawyers{
+        padding-left: 2em !important;
+      }
+  }
+  }
+
   #purchase{
     padding: 1em;
 
     div{
       border: 1px solid black;
-      padding: 1em;
+      padding: .5em 1em;
+      background-color: lightgray;
+
+      span{
+        padding: 0;
+        font-size: .8em;
+      }
+
+      span:nth-child(2){
+        font-size: .6em;
+      }
     }
 
     div:hover {
-      background-color: lightgray;
+      background-color: white;
     }
 
   }
@@ -119,32 +232,27 @@
     }
   }
 
-  #dep-details{
-    padding: 1em;
-
-    p{
-      margin-bottom: 0;
-    }
-
-    h4{
-      margin-top: 0;
-    }
-
-    .flex-container{
-      display: flex;
-
-    }
-  }
 
   #court-reporter{
     p{
       margin-left: 1em; 
     }
+
+    span{
+      img{
+        width:20%;
+        float: left;
+        margin-bottom: 1em;
+        margin-right: 1em;  
+      }
+    }
+
   }
 
   #toggle-display{
+    clear: both;
     border: 1px solid black;
-    width: 40%;
+    width: 28%;
     margin-left: 1em;
 
     p{
@@ -152,10 +260,41 @@
       display: inline-block;
       padding: .5em 1em;
       margin: 0;
+      font-size: .8em;
     }
 
     p:hover{
       background-color: lightgray;
+    }
+  }
+}
+
+.headers{
+  margin-left: 1em;
+
+  h5{
+    font-size: 10px;  
+    font-weight: normal;
+    margin-bottom: .2em;
+  }
+}
+
+.exhibits{
+  padding-left: 1em;
+  margin-top: 0;
+  li{
+    border: 1px solid black;
+
+    span{
+      width: 30%;
+    }
+
+    #watermark{
+      width: 10%;
+    }
+
+    .more-dots{
+      width: 10%;
     }
   }
 }

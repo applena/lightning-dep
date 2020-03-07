@@ -4,49 +4,99 @@ import '../cases.scss';
 import If from '../../library/If';
 import sortBy from '../../functional/sortBy';
 import { Link } from 'react-router-dom';
+import { withRouter } from "react-router";
+import './oneCase.scss';
+import search from '../../functional/search';
 
 let backendUrl = "https://lightningdep.azurewebsites.net/api";
 
 class OneCase extends React.Component{
   constructor(props) {
     super(props);
-    this.state = {
-      visibleDepArray: [],
-      displayInviteModalPlaintiff: false,
-      displayInviteModalDefendent: false,
-      displayInviteModalParalegalP: false,
-      displayInviteModalParalegalD: false,
-      displayOneCase: true,
-      displayCreateDeposition: false
-    }
-  }
+    // console.log('params for oneCase', this.props)
+    const id = this.props.match.params.id;
+    // console.log('in one case with id', id)
 
-  componentWillMount = () => {
-    this.setState({
-      visibleDepArray:this.props.oneCase.depositions,
+
+    const caseFileMatches = this.props.lawyerObj.cases.filter(file => file.case.id == id);
+
+    if(!caseFileMatches.length){ 
+      // TODO handle error page
+      return
+    }
+    const caseFile = caseFileMatches[0];
+
+
+    let plantiffLawyers = caseFile.plantiffLawyers.map( lawyer => {
+      return({
+      firstName: lawyer.firstName,
+      lastName: lawyer.lastName,
+      firm: lawyer.firm,
+      email: lawyer.email
+      })
     })
 
-    this.updateDepArraySorted(this.props.oneCase.depositions)
-    
+    let defendentLawyers = caseFile.defendentLawyers.map( lawyer => {
+      return({
+      firstName: lawyer.firstName,
+      lastName: lawyer.lastName,
+      firm: lawyer.firm,
+      email: lawyer.email
+      })
+    })
+
+    let depositionsArray = caseFile.depositions.map(depo => {
+      return({
+        name: depo.witnessName,
+        date: new Date(`${new Date(depo.date).toDateString()} ${depo.date.slice(28)}`),
+        courtReporter: `${depo.courtReporter.firstName} ${depo.courtReporter.lastName}`,
+        isActive: depo.isActive,
+        owner: 'tbd',
+        exhibits: depo.exhibits.map(exhibit => {
+          return({
+            name: exhibit.name,
+            deposition: depo.name,
+            exhibitNumber: exhibit.id,
+            fileType: 'tbd'
+          })
+        })
+      })
+    })
+
+    this.state = { oneCase: {
+      name: caseFile.case.name,
+      caseNumber: caseFile.case.caseNumber,
+      caseType: caseFile.case.caseType,
+      date: caseFile.case.date,
+      isActive: caseFile.case.isActive,
+      exampleCourtName: null,
+      plantiff: caseFile.plantiff,
+      defendant: caseFile.defendant,
+      plantiffLawyers: plantiffLawyers,
+      defendentLawyers: defendentLawyers,
+      depositions: depositionsArray,
+    }, visibleDepArray: depositionsArray,
+    displayInviteModalPlaintiff: false,
+    displayInviteModalDefendent: false,
+    displayInviteModalParalegalP: false,
+    displayInviteModalParalegalD: false,
+    displayOneCase: true,
+    displayCreateDeposition: false };
   }
 
   displayUpcoming = () => {
-    let currentYear = new Date().getYear() + 1900;
-    let currentDay = new Date().getDate();
-    let currentMonth = new Date().getMonth() + 1;
-    let endDate = `${currentYear}-${currentMonth}-${currentDay}`;
+    let endDate = Date.now();
+    let beginning=new Date('1970-01-01')
 
-    let sortedArray = sortBy('1970-01-01', endDate, 'upcoming', this.props.oneCase.depositions);
+    let sortedArray = sortBy(beginning, endDate, 'upcoming', this.props.oneCase.depositions);
     this.updateDepArraySorted(sortedArray);
   }
 
   displayPast = () => {
-    let currentYear = new Date().getYear() + 1900;
-    let currentDay = new Date().getDate();
-    let currentMonth = new Date().getMonth() + 1;
-    let endDate = `${currentYear}-${currentMonth}-${currentDay}`;
+    let endDate = Date.now();
+    let beginning=new Date('1970-01-01')
 
-    let sortedArray = sortBy('1970-01-01', endDate, 'past', this.props.oneCase.depositions);
+    let sortedArray = sortBy(beginning, endDate, 'past', this.props.oneCase.depositions);
     this.updateDepArraySorted(sortedArray);
   }
 
@@ -128,32 +178,38 @@ class OneCase extends React.Component{
     // send a succss or error message
   }
 
+  runSearch = (e) => {
+    e.preventDefault();
+    console.log('this one', this.state.oneCase.depositions)
+    let searchResults = search(e, this.state.visibleDepArray);
+    this.setState({ visibleDepArray: searchResults })
+  }
+
   render(){
 
-    console.log('display create dep', this.state.displayCreateDeposition)
+    // console.log('in my one case render', this.state.oneCase, this.state.oneCase.caseNumber)
     return(
       <>
-      <If condition={this.state.displayOneCase}>
         <div id='one-case'>
-          <span onClick={this.props.displayAllCases}>&lt; Cases</span>
+          <Link to={`/cases`}>&lt; Cases</Link>
           <div className="flex-container" id="one-case-header">
             <div>
-              <p>{this.props.oneCase.caseNumber}</p>
-              <h2>{this.props.oneCase.name}</h2>
+              <p>{this.state.oneCase.caseNumber}</p>
+              <h2>{this.state.oneCase.name}</h2>
             </div>
             <div>
-              <p>{this.props.oneCase.caseType}Case Type</p>
-              <p>{this.props.oneCase.exampleCourtName}Court Name</p>
+              <p>{this.state.oneCase.caseType}Case Type</p>
+              <p>{this.state.oneCase.exampleCourtName}Court Name</p>
             </div>
           </div>
 
           <div className="flex-container" id="one-case-details">
             <div className="plaintiff">
               <h5>Plaintiff</h5>
-              <h4>{this.props.oneCase.plantiff}</h4>
+              <h4>{this.state.oneCase.plantiff}</h4>
               <h5>Represented by</h5>
               <ul>
-              {this.props.oneCase.plantiffLawyers.map((lawyer, idx) => (
+              {this.state.oneCase.plantiffLawyers.map((lawyer, idx) => (
                 <li key={idx}>
                   <span>{lawyer.firstName} {lawyer.lastName}</span>
                 </li>
@@ -186,10 +242,10 @@ class OneCase extends React.Component{
 
             <div className="defendant">
               <h5>Defendant</h5>
-              <h4>{this.props.oneCase.defendant}</h4>
+              <h4>{this.state.oneCase.defendant}</h4>
               <h5>Represented by</h5>
               <ul>
-              {this.props.oneCase.defendentLawyers.map((lawyer, idx) => (
+              {this.state.oneCase.defendentLawyers.map((lawyer, idx) => (
                 <li key={idx}>
                   <span>{lawyer.firstName} {lawyer.lastName}</span>
                 </li>
@@ -228,11 +284,13 @@ class OneCase extends React.Component{
                 </div>
                 <TimeDropDown 
                   sortArray={this.updateDepArraySorted} 
-                  array={this.props.oneCase.depositions} 
+                  array={this.state.oneCase.depositions} 
                 />
-                <input name="search" placeholder="search">
-                </input>
-                <Link to="/createDeposition">Create Deposition</Link>
+                <form onSubmit={this.runSearch}>
+                  <input name="search" placeholder="search"></input>
+                </form>
+
+                  <Link to={`/createDeposition/${this.state.oneCase.caseNumber}`}>Create Deposition</Link>
               </div>
 
               <div className="flex-container">
@@ -255,17 +313,10 @@ class OneCase extends React.Component{
               </ul>
         </div>
       </div>
-    </If>
 
-    {/* <If condition={this.state.displayCreateDeposition}>
-      <CreateDeposition 
-      oneCase={this.props.oneCase}
-      displayOneCase={this.displayOneCase} 
-    />
-    </If> */}
     </>
     )
   }
 }
 
-export default OneCase;
+export default withRouter(OneCase);

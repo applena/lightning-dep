@@ -1,9 +1,18 @@
 #mini-alerts{
   border-bottom: 2px solid black;
 
-  ul li{
+  ul{ 
+
+    padding-left: 1em;
+
+    li{
     list-style-type: none;
     padding: .2em;
-    font-size: .8em;
+    font-size: .7em;
+    }
+  }
+
+  li:hover{
+    background-color: lightgray;
   }
 }

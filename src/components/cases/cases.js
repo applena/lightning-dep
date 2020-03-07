@@ -1,27 +1,20 @@
 import React from 'react';
 import TimeDropDown from '../library/timeDropDown';
 import './cases.scss';
-import If from '../library/If';
-import sortBy from '../functional/sortBy';
-import OneCase from './oneCase/oneCase';
-
-let backendUrl = "https://lightningdep.azurewebsites.net/api";
+import { Link } from 'react-router-dom';
+import NextPage from '../functional/nextPage';  
+import search from '../functional/search';
 
 class Cases extends React.Component{
   constructor(props) {
     super(props);
+
     this.state = {
-      visibleCasesArray: [],
-      oneCase: this.props.caseFiles[0]
-    };
-  }
+      visibleCasesArray:this.props.lawyerObj.cases,
+      index: 0
+    }
 
-  componentWillMount = () => {
-    this.setState({
-      visibleCasesArray:this.props.caseFiles,
-    })
-
-    this.updateCasesArraySorted(this.props.caseFiles)
+    this.updateCasesArraySorted(this.props.lawyerObj.cases)
     
   }
 
@@ -29,82 +22,39 @@ class Cases extends React.Component{
     this.setState({ visibleCasesArray: array })
   }
 
-  displayOneCase = (idx) => {
-    let caseFile = this.props.caseFiles[idx];
-
-    let plantiffLawyers = caseFile.plantiffLawyers.map( lawyer => {
-      return({
-      firstName: lawyer.firstName,
-      lastName: lawyer.lastName,
-      firm: lawyer.firm,
-      email: lawyer.email
-      })
+  displayNextPage = () => {
+    let nextPage = NextPage(this.props.lawyerObj.cases, this.state.index);
+    this.setState({
+      index: this.state.index + 10,
+      visibleCasesArray: nextPage
     })
+  }
 
-    let defendentLawyers = caseFile.defendentLawyers.map( lawyer => {
-      return({
-      firstName: lawyer.firstName,
-      lastName: lawyer.lastName,
-      firm: lawyer.firm,
-      email: lawyer.email
-      })
-    })
-
-    let depositionsArray = caseFile.depositions.map(depo => {
-      return({
-        name: depo.witnessName,
-        date: new Date(`${new Date(depo.date).toDateString()} ${depo.date.slice(28)}`),
-        courtReporter: `${depo.courtReporter.firstName} ${depo.courtReporter.lastName}`,
-        isActive: depo.isActive,
-        owner: 'tbd',
-        exhibits: depo.exhibits.map(exhibit => {
-          return({
-            name: exhibit.name,
-            deposition: depo.name,
-            exhibitNumber: exhibit.id,
-            fileType: 'tbd'
-          })
-        })
-      })
-    })
-
-    this.setState({ oneCase: {
-      name: caseFile.name,
-      caseNumber: caseFile.caseNumber,
-      caseType: caseFile.caseType,
-      date: caseFile.date,
-      isActive: caseFile.isActive,
-      exampleCourtName: null,
-      plantiff: caseFile.plantiff,
-      defendant: caseFile.defendant,
-      plantiffLawyers: plantiffLawyers,
-      defendentLawyers: defendentLawyers,
-      depositions: depositionsArray,
-    }, visibleDepArray: depositionsArray })
-
-    this.props.displayOneCase();
-  } 
+  runSearch = (e) => {
+    e.preventDefault();
+    let searchResluts = search(e, this.state.visibleCasesArray);
+    this.setState({ visibleCasesArray: searchResluts });
+  }
 
   render(){
     
-    console.log('❤️', this.state.visibleCasesArray);
     return(
       <div id="cases">
-        <If condition={this.props.showCases}>
           <h4>Cases</h4>
-          <button>Create Case</button>
+          <Link to='/createDeposition'>Create Case</Link>
           <div>
             <span>Active</span>
             <span>Past</span>
           </div>
             <TimeDropDown 
-              array={this.props.caseFiles} 
+              array={this.props.lawyerObj.cases} 
               sortArray={this.updateCasesArraySorted}
           />
-            <input name="search" placeholder="Search"></input>
-        </If>
+            <form onSubmit={this.runSearch}>
+              <input name="search" placeholder="Search"></input>
+            </form>
+       
 
-        <If condition={this.props.showCases}>
           <div id='all-cases'>
             <div className="flex-container headings">
               <span>Name</span>
@@ -117,26 +67,22 @@ class Cases extends React.Component{
             <div className="flex-container caseFiles">
               <ul>
               {this.state.visibleCasesArray.map((file, idx) => (
-                <li onClick={() => this.displayOneCase(idx)} key={idx}>
-                  <span>{file.name}</span>
-                  <span>{file.caseNumber}</span>
-                  <span>{file.court}</span>
-                  <span>{file.depositions.length}</span>
-                  <span>...</span>
-                </li>
+                <Link to={`/cases/${file.case.id}`}>
+                  <li className="table-container" key={idx}>
+                    <span>{file.case.name}</span>
+                    <span>{file.case.caseNumber}</span>
+                    <span>{file.case.court}</span>
+                    <span>{file.depositions.length}</span>
+                    <span>...</span>
+                  </li>
+                </Link>
               ))}
               </ul>
             </div>
+            <button onClick={this.displayNextPage}>next</button>
           </div>
-        </If>
+        
 
-        <If condition={this.props.showOneCase}>
-          <OneCase
-            displayOneCase={this.props.displayOneCase}
-            oneCase={this.state.oneCase}
-            displayAllCases={this.props.displayAllCases}
-          />
-        </If>
 
       </div>
     )

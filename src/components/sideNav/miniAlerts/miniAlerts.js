@@ -1,5 +1,6 @@
 import React from 'react';
 import './miniAlerts.scss';
+import { Link } from 'react-router-dom';
 
 class MiniAlerts extends React.Component{
 
@@ -7,7 +8,7 @@ class MiniAlerts extends React.Component{
     return(
       <div id="mini-alerts">
         <ul>
-          <li>Account</li>
+          <li><Link to="/account">Account</Link></li>
           <li>Alerts</li>
           <li><a onClick={this.props.loggOut}>Log Out</a></li>
         </ul>

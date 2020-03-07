@@ -3,18 +3,29 @@ import '../depositions.scss';
 import $ from 'jquery';
 import If from '../../library/If';
 import { Link } from 'react-router-dom';
+import { withRouter } from "react-router";
+import courtReporterImage from '../../../assets/courtReporter.jpg'
 
 class OneDeposition extends React.Component{
   constructor(props) {
     super(props);
 
-    // props: caseFiles, userName, id, and displayAllDepositions (the 'go back' button)
+    const id = Number(this.props.match.params.id);
+
+    // props: lawyerObj, userName, id, and displayAllDepositions (the 'go back' button)
 
     // find the case and the deposition
-    this.props.caseFiles.forEach(file => {
-      const depFiles = file.depositions.filter(dep => dep.id === this.props.depId);
+    this.props.lawyerObj.cases.forEach(file => {
+      const depFiles = file.depositions.filter(dep => {
+        
+        return dep.id == id
+      
+      });
 
+      // TODO: figure out why depFiles is an empty array even though it is filtering with a positive result
+      console.log(depFiles)
       if(!depFiles.length){
+        console.log('no deps found with id of ', id)
         return;
       }
 
@@ -25,7 +36,7 @@ class OneDeposition extends React.Component{
       const lawyersAttendingPlantiff = [];
       
       file.plantiffLawyers.forEach(lawyer => {
-        if(depFiles[0].notAttending.includes(lawyer.email)){
+        if(depFiles[0].notAttendingLawyers.includes(lawyer.email)){
           lawyersNotAttendingPlantiff.push(lawyer);
         } else {
           lawyersAttendingPlantiff.push(lawyer);
@@ -37,7 +48,7 @@ class OneDeposition extends React.Component{
       const lawyersNotAttendingDefendent = [];
       const lawyersAttendingDefendent = [];
       file.defendentLawyers.forEach(lawyer => {
-        if(depFiles[0].notAttending.includes(lawyer.email)){
+        if(depFiles[0].notAttendingLawyers.includes(lawyer.email)){
           lawyersNotAttendingDefendent.push(lawyer);
         } else {
           lawyersAttendingDefendent.push(lawyer);
@@ -82,7 +93,8 @@ class OneDeposition extends React.Component{
             <span>{exhibit.name}</span>
             <span>{idx}</span>
             <span>{exhibit.documentType}</span>
-            <span>...</span>
+            <span id="watermark">🥇</span>
+            <span className="more-dots">...</span>
           </li>
         )
       })
@@ -156,8 +168,9 @@ class OneDeposition extends React.Component{
   }
 
   processPayment = () => {
+    console.log('in the process payment');
     // call server to get session ID
-    let serverURL = "";
+    let serverURL = "https://lightningdep.azurewebsites.net/api";
     $.getJSON(`${serverURL}/checkoutSessionId`, function(checkoutSessionId) {
       var stripe = window.Stripe('pk_test_rmguZ1IdJrE01JOAs4bgz8Mj005tMPrNc3');
       stripe.redirectToCheckout({
@@ -166,7 +179,7 @@ class OneDeposition extends React.Component{
         // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
         sessionId: checkoutSessionId
       }).then(function (result) {
-        console.log(result);
+        console.log('the thing I got back from stripe', result);
   
         // result.error.message;
       }).catch(error => {
@@ -182,25 +195,25 @@ class OneDeposition extends React.Component{
         <Link to="/depositions"><span onClick={this.props.displayAllDepositions} className="border-bottom">&lt; Depositions</span></Link>
         <div className="felx-container border-bottom">
           <div>
-            <span>{this.state.oneDeposition.date}</span>
+            <span>{this.state.oneDeposition.date.slice(28)} {new Date(this.state.oneDeposition.date).toDateString()}</span>
             <span id="witness-name">{this.state.oneDeposition.witnessName}</span>
           </div>
           <a id="rough-transcript" href="">Download rough transcript</a>
         </div>
         
-        <div className="felx-container">
+        <div className="flex">
           <div id="dep-details">
             <p>Represented by</p>
             <h4>{this.props.userName}</h4>
             <p>{this.state.caseNumber}</p>
             <h4>{this.state.caseName}</h4>
 
-            <div>Attending</div>
-            <div className="flex-container">
+            <p>Attending</p>
+            <div className="flex-container lawyers">
               <ul>
                 {this.state.plantiffLawyers}
               </ul>
-              <ul>
+              <ul className="def-lawyers">
                 {this.state.defendentLawyers}
               </ul>
             </div>
@@ -230,6 +243,7 @@ class OneDeposition extends React.Component{
         </div>
       <div id="court-reporter">
         <p>Court Reporter</p>
+        <span><img src={courtReporterImage} alt={this.state.oneDeposition.courtReporter.firstName} /></span>
         <span>{this.state.oneDeposition.courtReporter.firstName} {this.state.oneDeposition.courtReporter.lastName}</span>
       </div>
 
@@ -239,19 +253,26 @@ class OneDeposition extends React.Component{
       </div>
 
         <If condition={this.state.displayDocuments}>
-            <ul>
-              {this.state.documents}
-            </ul>
+          <ul>
+            {this.state.documents}
+          </ul>
         </If>
 
         <If condition={this.state.displayExhibits}>
-            <ul>
-              {this.state.exhibits}
-            </ul>
+          <div className="flex-container headers">
+            <h5>Name</h5>
+            <h5>Exhibit Number</h5>
+            <h5>File Type</h5>
+            <h5></h5>
+            <h5></h5>
+          </div>
+          <ul className="exhibits">
+            {this.state.exhibits}
+          </ul>
         </If>
 
       </div>
     )}
 }
 
-export default OneDeposition;
+export default withRouter(OneDeposition);

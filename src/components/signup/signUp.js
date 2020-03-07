@@ -8,6 +8,7 @@ var jwt = require('jsonwebtoken');
 window.$ = $;
 
 let backendUrl = "https://lightningdep.azurewebsites.net/api";
+// let backendUrl = 'https://lightningdep.azurewebsites.net/api/Dashboard?id=1&role=lawyer'
 
 class SignUp extends React.Component{
   constructor(props) {
@@ -62,65 +63,66 @@ class SignUp extends React.Component{
     } else {
       data = {firstName:firstName, lastName:lastName, email:email, password:password, state:state, paralegalFirm:paralegalFirm, lawyerEmail:lawyerEmail};
     }
-    // console.log('the data object', data)
-    // let configs = {
-    //   method: "POST",
-    //   type: "POST",
-    //   url: `${backendUrl}/register/lawyer`,
-    //   data: data,
-    //   dataType: "json",
-    //   success: data => {
-    //     // if data is bad abort
-    //     console.log('data!!!!!!!!!!', data)
-    //     // this.login(data)
-    //   },
-    //   contentType: "application/json; charset=utf-8"
-    // };
+    console.log('the data object', data)
+    let configs = {
+      method: "POST",
+      type: "POST",
+      url: `${backendUrl}/Register/lawyer`,
+      data: data,
+      success: data => {
+        // if data is bad abort
+        console.log('data!!!!!!!!!!', data)
+        this.login(data)
+      },
+      contentType: "application/json; charset=utf-8"
+    };
 
-    // console.log(configs);
+    console.log(configs);
     // $.ajax(configs)
 
     var request = new XMLHttpRequest();
-    request.open('POST', `${backendUrl}/register/lawyer`, true);
+    request.open('POST', `${backendUrl}/Register/lawyer`, true);
     request.setRequestHeader('Content-Type', "application/json; charset=utf-8");
+
+    console.log('data!!!!!!!!', data);
     request.send(JSON.stringify(data));
 
   }
 
-  // signIn = (e) => {
-  //   e.preventDefault();
-  //   let email = e.target.email.value;
-  //   let password = e.target.password.value;
+  signIn = (e) => {
+    e.preventDefault();
+    let email = e.target.email.value;
+    let password = e.target.password.value;
 
-  //   let data = {email: email, password: password}
-  //   let configs = {
-  //     type: "POST",
-  //     url: `${backendUrl}/SignIn`,
-  //     data: data,
-  //     dataType: "JSON"
-  //   };
+    let data = {email: email, password: password}
+    let configs = {
+      type: "POST",
+      url: `${backendUrl}/SignIn`,
+      data: data,
+      dataType: "JSON"
+    };
 
-  //   $.ajax( configs )
-  //    .then( data => {
-  //      // if data is bad abort
-  //      // use the jwt library to verify the token and examin the contents
-  //      var decoded = jwt.verify(data.token, 'M8+RgzRV0dN3eHTaPVXycwAk/LrnOPfblsAS96qNmrk=');
-  //      // figure out what keys are in the decoded jwt
-  //      console.log(decoded.foo) // bar
+    $.ajax( configs )
+      .then( data => {
+       // if data is bad abort
+       // use the jwt library to verify the token and examin the contents
+       var decoded = jwt.verify(data.token, 'M8+RgzRV0dN3eHTaPVXycwAk/LrnOPfblsAS96qNmrk=');
+       // figure out what keys are in the decoded jwt
+       console.log(decoded.foo) // bar
 
-  //      // call set userName with the username from the jwt
-  //      this.props.updateUserInfo(decoded.userName)
+       // call set userName with the username from the jwt
+       this.props.updateUserInfo(decoded.userName, decoded.role)
 
-  //      this.login(data)
-  //    })
-  // }
+       this.login(data)
+     })
+  }
 
-  // login = (token) => {
+  login = (token) => {
 
-  //   Cookie.set('JWT', token, { secure: true })
+    Cookie.set('JWT', token, { secure: true })
 
-  //   this.getUserName(token);
-  // }
+    this.getUserName(token);
+  }
 
   updateValue = () => {
     let confirmPassword = document.getElementById('confirm-password').value;

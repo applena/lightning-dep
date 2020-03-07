@@ -1,11 +1,11 @@
 const sortBy = (startDate, endDate, current, array) => {
-  console.log('at beginning of functional component with array:', array, startDate, endDate);
+  
   //sorts the items by start date, end date and current, or past and the array
   let filteredArray = [];
   if(current === 'all'){
-    console.log('in the all condition');
     return filteredArray = array.filter(log => {
-      return (log.date > startDate) && (log.date < endDate)
+      console.log('month', new Date(log.date), startDate)
+      return (new Date(log.date) > startDate) && (new Date(log.date) < endDate)
     })
   } else {
     if(current === 'upcoming'){
