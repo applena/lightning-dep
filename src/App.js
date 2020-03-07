@@ -21,18 +21,18 @@ class App extends React.Component{
   constructor(props) {
     super(props);
     // use jsonwebtoken library to examine the JWT COOKIE, see if it is valid and get the username out of it
-    // const loggedIn = !!Cookie.get('JWT');
+    const loggedIn = !!Cookie.get('JWT');
 
     let alerts = [{title: 'New Document Available', description: '3;17-cv-0019087'}, {title: 'Deposition Transcript Available', description: 'Jane Doe'}, {title: 'Deposition Transcript Available', description: 'John Doe'}]
 
-    // if(!Cookie.get('JWT')){
-    //   this.state = {loggedIn: false}
-    // } else { 
-    //   this.state = { loggedIn: true }
-    //    this.getCaseObject();
-    // }
+    if(!Cookie.get('JWT')){
+      this.state = {loggedIn: false}
+    } else { 
+      this.state = { loggedIn: true }
+       this.getCaseObject();
+    }
     this.state = {
-      loggedIn: true,
+      loggedIn: loggedIn,
       userName: 'Jane Lawyer', // TODO: get this username from the JWT cookie
       userRole: 'lawyer', //TODO: get this info from the JWT cookie in the signUp.js
       showDepositions: true,
