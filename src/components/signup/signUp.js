@@ -86,12 +86,11 @@ class SignUp extends React.Component{
     var request = new XMLHttpRequest();
     request.open('POST', `${backendUrl}/Register/${this.state.roleTab}`, true);
     request.setRequestHeader('Content-Type', "application/json; charset=utf-8");
-    request.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        console.log('🎫', this.responseText)
-      }
-
-    };
+    request.onreadystatechange = () => {
+      if(request.readyState == 4){
+        console.log('🧘‍♂️',request.response)
+      };
+    }
 
     request.onerror = function() {
       // There was a connection error of some sort

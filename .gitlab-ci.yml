@@ -1,0 +1,17 @@
+image: node:8.12.0-alpine
+
+stages:
+  - build
+
+before_script:
+  - apk add --update curl python py-pip build-base
+  - pip install awscli
+
+s3_deploy:
+  stage: build
+  script:
+    - npm i
+    - npm run build
+    - aws s3 sync ./public s3://lightningdep.com
+    - aws cloudfront create-invalidation --distribution-id EBTIN5MI4SZLR --paths "/*"
+  
