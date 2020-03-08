@@ -64,30 +64,12 @@ class SignUp extends React.Component{
       data = {firstName:firstName, lastName:lastName, email:email, password:password, state:state, paralegalFirm:paralegalFirm, lawyerEmail:lawyerEmail};
     }
     console.log('the data object', data)
-    // let configs = {
-    //   method: "POST",
-    //   type: "POST",
-    //   url: `${backendUrl}/register/${this.state.roleTab}`,
-    //   data: data,
-    //   success: data => {
-    //     // if data is bad abort
-    //     console.log('data!!!!!!!!!!', data)
-    //     this.login(data)
-    //   },
-    //   error: function (jqXHR, textStatus, errorThrown){
-    //     console.log('was not successful getting data from ajax')
-    //   },
-    //   contentType: "application/json; charset=utf-8"
-    // };
-
-    // console.log(configs);
-    // $.ajax(configs)
 
     var request = new XMLHttpRequest();
     request.open('POST', `${backendUrl}/Register/${this.state.roleTab}`, true);
     request.setRequestHeader('Content-Type', "application/json; charset=utf-8");
     request.onreadystatechange = () => {
-      if(request.readyState == 4){
+      if(request.readyState === 4){
         console.log('🧘‍♂️',request.response)
       };
     }
@@ -303,7 +285,7 @@ class SignUp extends React.Component{
                   <button>Sign Up</button>
                 </form>
 
-                <a id="sign-in" onClick={this.showSignIn}>Already have an account? <span className="underline">Sign In</span></a>
+                <button id="sign-in" onClick={this.showSignIn}>Already have an account? <span className="underline">Sign In</span></button>
 
                 <If condition={this.state.showSignIn}>
                   <form id="sign-in-form" onSubmit={this.signIn}>

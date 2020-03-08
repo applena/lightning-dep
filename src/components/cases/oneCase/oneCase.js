@@ -14,11 +14,11 @@ class OneCase extends React.Component{
   constructor(props) {
     super(props);
     // console.log('params for oneCase', this.props)
-    const id = this.props.match.params.id;
+    const id = Number(this.props.match.params.id);
     // console.log('in one case with id', id)
 
 
-    const caseFileMatches = this.props.lawyerObj.cases.filter(file => file.case.id == id);
+    const caseFileMatches = this.props.lawyerObj.cases.filter(file => file.case.id === id);
 
     if(!caseFileMatches.length){ 
       // TODO handle error page

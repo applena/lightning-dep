@@ -19,8 +19,8 @@ class Account extends React.Component{
     return(
       <div id="account-top" className="flex-container">
         <div id="profile-imgs">
-          <img src={logo} />
-          <img src={profileUrl} />
+          <img  alt="" src={logo} />
+          <img alt="" src={profileUrl} />
         </div>
         <h2>{this.props.userName}</h2>
       </div>

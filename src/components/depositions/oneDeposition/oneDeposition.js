@@ -18,7 +18,7 @@ class OneDeposition extends React.Component{
     this.props.lawyerObj.cases.forEach(file => {
       const depFiles = file.depositions.filter(dep => {
         
-        return dep.id == id
+        return dep.id === id
       
       });
 
@@ -67,13 +67,13 @@ class OneDeposition extends React.Component{
       lawyersAttendingPlantiff.forEach((lawyer) => {
         return plantiffLawyers.push(
           <li key={lawyer.id}>
-          <span>✔️</span><span>{lawyer.firstName} {lawyer.lastName}</span>
+          <span role="img" aria-label="check">✔️</span><span>{lawyer.firstName} {lawyer.lastName}</span>
         </li>)
       })
       
       // defendent lawyers
       var defendentLawyers = []
-      lawyersNotAttendingDefendent.map((lawyer, idx) => {
+      lawyersNotAttendingDefendent.forEach((lawyer, idx) => {
         defendentLawyers.push(<li key={idx}>
           <span>X</span><span>{lawyer}</span>
         </li>)
@@ -81,19 +81,19 @@ class OneDeposition extends React.Component{
       
       lawyersAttendingDefendent.forEach((lawyer) => {
         defendentLawyers.push(<li key={lawyer.id}>
-          <span>✔️</span><span>{lawyer.firstName} {lawyer.lastName}</span>
+          <span role="img" aria-label="check">✔️</span><span>{lawyer.firstName} {lawyer.lastName}</span>
         </li>)
       })
       
       // get the exhibits
       var exhibits = [];
-      depFiles[0].exhibits.map((exhibit, idx) => {
+      depFiles[0].exhibits.forEach((exhibit, idx) => {
         exhibits.push(
           <li key={idx}>
             <span>{exhibit.name}</span>
             <span>{idx}</span>
             <span>{exhibit.documentType}</span>
-            <span id="watermark">🥇</span>
+            <span role="img" aria-label="watermark" id="watermark">🥇</span>
             <span className="more-dots">...</span>
           </li>
         )
@@ -102,7 +102,7 @@ class OneDeposition extends React.Component{
       // get the documents
       var documents = [];
       if(depFiles[0].documents){
-        depFiles[0].documents.map((documents, idx) => {
+        depFiles[0].documents.forEach((documents, idx) => {
           documents.push(
             <li key={idx}>
               <span>{documents}</span>
@@ -141,7 +141,7 @@ class OneDeposition extends React.Component{
     let documents = [];
 
     if(this.state.oneDeposition.documents === null){
-      this.state.documents = "no documents available"
+      this.setState({ documents: "no documents available" });
     } else {
       this.state.oneDeposition.documents.forEach((doc, idx) => {
         documents.push(
@@ -198,7 +198,7 @@ class OneDeposition extends React.Component{
             <span>{this.state.oneDeposition.date.slice(28)} {new Date(this.state.oneDeposition.date).toDateString()}</span>
             <span id="witness-name">{this.state.oneDeposition.witnessName}</span>
           </div>
-          <a id="rough-transcript" href="">Download rough transcript</a>
+          <button id="rough-transcript" href="">Download rough transcript</button>
         </div>
         
         <div className="flex">
@@ -223,11 +223,11 @@ class OneDeposition extends React.Component{
 
           <div onClick={this.purchaseModal} id="purchase">
             <div>
-              <span>📄 Transcript</span> 
+              <span role="img" aria-label="transcript">📄 Transcript</span> 
               <span>~$300 - $390</span>
             </div>
             <div>
-              <span>📹 Video</span>
+              <span role="img" aria-label="video">📹 Video</span>
               <span>~$200</span>
             </div>
           </div>
@@ -263,8 +263,8 @@ class OneDeposition extends React.Component{
             <h5>Name</h5>
             <h5>Exhibit Number</h5>
             <h5>File Type</h5>
-            <h5></h5>
-            <h5></h5>
+            <h5>""</h5>
+            <h5>""</h5>
           </div>
           <ul className="exhibits">
             {this.state.exhibits}

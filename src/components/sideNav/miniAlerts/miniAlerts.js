@@ -10,7 +10,7 @@ class MiniAlerts extends React.Component{
         <ul>
           <li><Link to="/account">Account</Link></li>
           <li>Alerts</li>
-          <li><a onClick={this.props.loggOut}>Log Out</a></li>
+          <li><button onClick={this.props.loggOut}>Log Out</button></li>
         </ul>
       </div>
     )
