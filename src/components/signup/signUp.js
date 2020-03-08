@@ -22,12 +22,13 @@ class SignUp extends React.Component{
 
   signUp = (e) => {
     e.preventDefault();
+    console.log('🏄🏻', e.target.password.value)
 
     // universal values
     let firstName = e.target.first.value;
     let lastName = e.target.last.value;
     let email = e.target.email.value;
-    let password = e.target.password.value;
+    let password = this.state.originalPassword;
     let state = e.target.state.value;
     let firm;
     let barNumber;
@@ -56,56 +57,50 @@ class SignUp extends React.Component{
 
     let data = {};
     if(this.state.roleTab==='lawyer'){
-      data = {role:this.state.roleTab, firstName:firstName, lastName:lastName, email:email, password:password, state:state, firm:firm, barNumber:barNumber};
+      data = {firstName:firstName, lastName:lastName, email:email, password:password, state:state, firm:firm, barNumber:barNumber};
     } else if(this.state.roleTab==='court reporter'){
       data = {firstName:firstName, lastName:lastName, email:email, password:password, state:state, company:company, accreditation:accreditation};
     } else {
       data = {firstName:firstName, lastName:lastName, email:email, password:password, state:state, paralegalFirm:paralegalFirm, lawyerEmail:lawyerEmail};
     }
-    // console.log('the data object', data)
-    let configs = {
-      method: "POST",
-      type: "POST",
-      url: `${backendUrl}/Register/${this.state.roleTab}`,
-      data: data,
-      success: data => {
-        // if data is bad abort
-        console.log('data!!!!!!!!!!', data)
-        this.login(data)
-      },
-      error: function (jqXHR, textStatus, errorThrown){
-        console.log('was not successful getting data from ajax')
-      },
-      contentType: "application/json; charset=utf-8"
-    };
+    console.log('the data object', data)
+    // let configs = {
+    //   method: "POST",
+    //   type: "POST",
+    //   url: `${backendUrl}/register/${this.state.roleTab}`,
+    //   data: data,
+    //   success: data => {
+    //     // if data is bad abort
+    //     console.log('data!!!!!!!!!!', data)
+    //     this.login(data)
+    //   },
+    //   error: function (jqXHR, textStatus, errorThrown){
+    //     console.log('was not successful getting data from ajax')
+    //   },
+    //   contentType: "application/json; charset=utf-8"
+    // };
 
     // console.log(configs);
-    $.ajax(configs)
+    // $.ajax(configs)
 
     var request = new XMLHttpRequest();
-    request.open('GET', '/my/url', true);
-
-    request.onload = function() {
-      if (this.status >= 200 && this.status < 400) {
-        // Success!
-        var resp = this.response;
-      } else {
-        // We reached our target server, but it returned an error
-
+    request.open('POST', `${backendUrl}/Register/${this.state.roleTab}`, true);
+    request.setRequestHeader('Content-Type', "application/json; charset=utf-8");
+    request.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        console.log('🎫', this.responseText)
       }
+
     };
 
     request.onerror = function() {
       // There was a connection error of some sort
     };
 
-    request.send();
+    request.send(JSON.stringify(data));
 
-  //   var request = new XMLHttpRequest();
-  //   request.open('POST', `${backendUrl}/Register/${this.state.roleTab}`, true);
-  //   request.setRequestHeader('Content-Type', "application/json; charset=utf-8");
 
-  //   request.send(JSON.stringify(data));
+
 
   }
 
@@ -147,7 +142,7 @@ class SignUp extends React.Component{
   updateValue = () => {
     let confirmPassword = document.getElementById('confirm-password').value;
     let originalPassword = document.getElementById('password').value;
-
+    
     this.setState({originalPassword:originalPassword, confirmPassword: confirmPassword});
   }
 
@@ -191,10 +186,28 @@ class SignUp extends React.Component{
                     <input name="email" defaultValue="applena@gmail.com" placeholder="Email" type="emial" pattern=".+@.+\..+" required></input>
                   </label>
                   <label>
-                    <input onChange={this.updateValue}id="password" defaultValue="asdf1234!" name="password" type="password" minLength="8" placeholder="Password" required></input>
+                  <input 
+                    onChange={this.updateValue}
+                    name="password" 
+                    id="password" 
+                    pattern="^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$" title="Minimum of 8 characters. Should have at least one special character and one number, one UpperCase Letter, and one LowerCase Letter."
+                    type="password" 
+                    minLength="8" 
+                    placeholder="Password" 
+                    required>
+                  </input>
                   </label>
                   <label>
-                    <input onChange={this.updateValue}id="confirm-password" defaultValue="asdf1234!" name="confirm-password" type="password" minLength="8" placeholder="Confirm Password" required></input>
+                  <input 
+                    onChange={this.updateValue}
+                    name="password" 
+                    id="confirm-password" 
+                    pattern="^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$" title="Minimum of 8 characters. Should have at least one special character and one number, one UpperCase Letter, and one LowerCase Letter."
+                    type="password" 
+                    minLength="8" 
+                    placeholder="Password" 
+                    required>
+                  </input>
                   </label>
                   <If condition={this.state.originalPassword !== this.state.confirmPassword}>
                     <div>Passwords Do Not Match</div>
@@ -300,10 +313,28 @@ class SignUp extends React.Component{
                       <input name="email" placeholder="Email" type="emial" pattern=".+@.+\..+" required></input>
                     </label>
                     <label>
-                      <input onChange={this.updateValue} id="password" name="password" type="password" minLength="8" placeholder="Password" required></input>
+                      <input 
+                        onChange={this.updateValue}
+                        id="password" 
+                        pattern="^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$" title="Minimum of 8 characters. Should have at least one special character and one number, one UpperCase Letter, and one LowerCase Letter."
+                        name="password" 
+                        type="password" 
+                        minLength="8" 
+                        placeholder="Password" 
+                        required>
+                      </input>
                     </label>
                     <label>
-                      <input onChange={this.updateValue}id="confirm-password" name="confirm-password" type="password" minLength="8" placeholder="Confirm Password" required></input>
+                      <input 
+                        onChange={this.updateValue}
+                        id="confirm-password" 
+                        pattern="^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$" title="Minimum of 8 characters. Should have at least one special character and one number, one UpperCase Letter, and one LowerCase Letter."
+                        name="password" 
+                        type="password" 
+                        minLength="8" 
+                        placeholder="Password" 
+                        required>
+                      </input>
                     </label>
                     <If condition={this.state.originalPassword !== this.state.confirmPassword}>
                       <div>Passwords Do Not Match</div>
